@@ -6,7 +6,7 @@ from django.conf import settings
 
 
 class AppUserManager(BaseUserManager):
-	def create_user(self, email,rusername, password=None):
+	def create_user(self, email,username, password=None):
 		if not email:
 			raise ValueError('An email is required.')
 		if not password:
@@ -51,12 +51,11 @@ class Driver(models.Model):
     firstname = models.CharField(max_length=200, )
     lastname =  models.CharField(max_length=200,)
     phone = models.PositiveIntegerField(max_length=200, )
-    email = models.CharField(max_length=200,)
-    driver_license = models.ImageField(upload_to='images/', )
-    passport_pic = models.ImageField(upload_to='images/', )
-    national_id = models.ImageField(upload_to='images/',)
+    driver_license = models.CharField(max_length=200)
+    passport_pic = models.CharField(max_length=200)
+    national_id = models.CharField(max_length=200)
     car_number = models.CharField(max_length=200, )
-    car_picture = models.ImageField(upload_to='images/',)
+    car_picture = models.CharField(max_length=200, )
 
 
     def __str__(self):
