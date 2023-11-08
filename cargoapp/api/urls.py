@@ -17,4 +17,6 @@ urlpatterns = [
 
     path('create/',views.CreateTrip.as_view(), name="all_trips"),
 
+    path('book/',views.BookTrip.as_view(), name="all_trips"),
+
 ]

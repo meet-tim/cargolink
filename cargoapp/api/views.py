@@ -92,6 +92,10 @@ class BookTrip(APIView):
     authentication_classes = (SessionAuthentication,)
  
     def post(self,request):
+        print(request.user.pk)
+        request.data['passenger'] = request.user.pk
+        request.data[""]
+        #request.data['trip'] = request.params.trip
         serializer = BookingSerializer(data=request.data)
         
         if serializer.is_valid():
@@ -99,7 +103,7 @@ class BookTrip(APIView):
             response_data = {
             "bookings":serializer.data,
             }
-        return Response(response_data)
+            return Response(response_data)
         
 
 class Dashboard(APIView):
@@ -107,12 +111,13 @@ class Dashboard(APIView):
     authentication_classes = (SessionAuthentication,)
     
     def get(self,request):
-        trips = Trip.objects.all()[0:5]
-        
+        trips = Trip.objects.all()[0:4]
+        my_trips = Booking.objects.filter(passenger=request.user.pk)
+        my_bookings = BookingSerializer(my_trips,many=True)
         serializer = TripSerializer(trips,many=True)
         response_data = {
-        "trip_count": len(serializer.data),
-        "trips": serializer
+        "my_trips":my_bookings.data,
+        "trips": serializer.data
         }
         return Response(response_data)
         
