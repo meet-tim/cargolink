@@ -6,7 +6,7 @@ from django.conf import settings
 
 
 class AppUserManager(BaseUserManager):
-	def create_user(self, email, password=None):
+	def create_user(self, email,rusername, password=None):
 		if not email:
 			raise ValueError('An email is required.')
 		if not password:
@@ -16,13 +16,14 @@ class AppUserManager(BaseUserManager):
 		user.set_password(password)
 		user.save()
 		return user
-	def create_superuser(self, email, password=None):
+	def create_superuser(self, email,username, password=None,):
 		if not email:
 			raise ValueError('An email is required.')
 		if not password:
 			raise ValueError('A password is required.')
-		user = self.create_user(email, password)
+		user = self.create_user(email, password,username)
 		user.is_superuser = True
+		user.is_staff = True
 		user.save()
 		return user
 
@@ -43,6 +44,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     	return self.username
     
 
+
+    
 class Driver(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     firstname = models.CharField(max_length=200, )
@@ -59,3 +62,26 @@ class Driver(models.Model):
     def __str__(self):
         return self.name
     
+
+class Trip (models.Model):
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='trips_offered',null=True)
+    departure_location = models.CharField(max_length=255)
+    destination = models.CharField(max_length=255)
+    departure_time = models.DateTimeField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    space_left = models.PositiveIntegerField(max_length=5000,default=5000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Trip from {self.departure_location} to {self.destination}"
+
+    class Meta:
+        ordering = ['-departure_time']
+		
+class Booking (models.Model):
+	passenger = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+	trip = models.ForeignKey(Trip,on_delete=models.CASCADE)
+	phone = models.PositiveIntegerField(max_length=200, )
+	full_name = models.CharField(max_length=100)
+	id_number = models.CharField(max_length=100)
+	

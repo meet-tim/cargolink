@@ -10,4 +10,11 @@ urlpatterns = [
 	path('logout/', views.UserLogout.as_view(), name='logout'),
  
 	path('user/', views.UserView.as_view(), name='user'),
+ 
+    path('alltrips/',views.AllTrips.as_view(), name="all_trips"),
+
+    path('mytrips/',views.MyTrips.as_view(), name="my_trips"),
+
+    path('create/',views.CreateTrip.as_view(), name="all_trips"),
+
 ]
