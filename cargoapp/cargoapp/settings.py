@@ -25,16 +25,14 @@ SECRET_KEY = 'django-insecure-se1xfr^t_uv#j35jsz%pp7=c5u*rvg3b%8f0l&ck7@2e6eqfl+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cargolink.pythonanywhere.com' ]
 
 
-CORS_ALLOW_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-]
+
+#CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTALS = True
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +47,20 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
 ]
 
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_SAVE_EVERY_REQUEST = True
+#from corsheaders.defaults import default_headers
+
+
+
+
+CORS_ALLOW_METHODS = ["GET","POST"]
+CORS_ALLOW_HEADERS = [ "accept", "accept-encoding", "authorization", "content-type", "dnt", "origin", "user-agent", "x-csrftoken", "x-requested-with",'Set-Cookie' ]
+#CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'cargoapp.urls'
